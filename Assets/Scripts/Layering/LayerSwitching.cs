@@ -1,20 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.InputSystem.InputAction;
 
 public class LayerSwitching : MonoBehaviour
 {
-    private 
+    private PlayerControls playerControls;
 
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private LayerInfo currentLayer;
+
+    void Awake()
     {
-        
+        playerControls = new PlayerControls();
+        playerControls.LayerMap.Switch.performed += SwitchLayer;
+        playerControls.LayerMap.Enable();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void SwitchLayer(CallbackContext ctx)
     {
-        
+        int dir = ctx.ReadValue<int>();
+        currentLayer = currentLayer.SwitchActiveLayer(dir);
+    }
+
+    private void OnDestroy()
+    {
+        playerControls.Disable();
     }
 }

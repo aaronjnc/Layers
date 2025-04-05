@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
+    [SerializeField]
+    private List<float> layerScales = new List<float>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,4 +19,12 @@ public class GameManager : MonoBehaviour
     {
         
     }
+}
+
+public enum EScale
+{
+    Fixed,
+    Large,
+    Medium,
+    Small,
 }
