@@ -26,11 +26,11 @@ public class LayerInfo : MonoBehaviour
         }
         if (topLayer != null)
         {
-            topLayer.moveLayer = SwitchLayer;
+            topLayer.moveLayer += SwitchLayer;
         }
         if (bottomLayer != null)
         {
-            bottomLayer.moveLayer = SwitchLayer;
+            bottomLayer.moveLayer += SwitchLayer;
         }
     }
 

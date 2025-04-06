@@ -18,7 +18,7 @@ public class LayerObject : MonoBehaviour
     protected virtual void Start()
     {
         parentLayer = GetComponentInParent<LayerInfo>();
-        parentLayer.moveLayer = SwitchLayer;
+        parentLayer.moveLayer += SwitchLayer;
         CheckCollider();
     }
 
