@@ -3,7 +3,10 @@ using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using static UnityEngine.InputSystem.InputAction;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(LayerTraveler))]
 public class PlayerMovement : Singleton<PlayerMovement>
 {
 
@@ -13,6 +16,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
     private Rigidbody2D rb;
     private PlayerControls controls;
     private CapsuleCollider2D col;
+    private LayerTraveler layerTraveler;
     [SerializeField]
     private float speed = 3.0f;
     [SerializeField]
@@ -23,10 +27,8 @@ public class PlayerMovement : Singleton<PlayerMovement>
     bool bGrounded = false;
     bool bAscending = false;
     float prevYVel = 0.0f;
-    private int currentDepth = 0;
     private bool bMovingToLocation = false;
     private Vector3 goalLocation = Vector3.zero;
-    private Vector3 automatedMoveDir = Vector3.zero;
     private float moveAcceptanceRadius = 0.0f;
     private LayerObject moveToObject;
 
@@ -35,6 +37,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
+        layerTraveler = GetComponent<LayerTraveler>();
         controls = new PlayerControls();
         controls.PlayerActions.Movement.performed += Move;
         controls.PlayerActions.Movement.canceled += StopMove;
@@ -109,7 +112,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
         }
         else
         {
-                bool bFrameGrounded = isGrounded() && Mathf.Abs(rb.linearVelocityY) <= .5f;
+            bool bFrameGrounded = isGrounded() && Mathf.Abs(rb.linearVelocityY) <= .5f;
             if (bAscending)
             {
                 if (prevYVel > 0 && rb.linearVelocityY <= 0)
@@ -142,6 +145,11 @@ public class PlayerMovement : Singleton<PlayerMovement>
         return Physics2D.Raycast(transform.position, -transform.up, col.bounds.extents.y + .1f, floor);
     }
 
+    private bool isStoppedGrounded()
+    {
+        return bGrounded;
+    }
+
     public float GetPlayerLow()
     {
         return col.bounds.min.y;
@@ -149,7 +157,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
 
     public int GetPlayerLayer()
     {
-        return currentDepth;
+        return layerTraveler.GetCurrentLayer();
     }
 
     public void MoveToLocation(Vector2 location, bool bIgnoreCollision, float acceptanceRadius, LayerObject objectGoal)
@@ -158,7 +166,6 @@ public class PlayerMovement : Singleton<PlayerMovement>
         if (bIgnoreCollision)
             rb.gravityScale = 0.0f;
         goalLocation = new Vector3(location.x, location.y, transform.position.z);
-        automatedMoveDir = goalLocation - transform.position;
         moveAcceptanceRadius = acceptanceRadius;
         moveToObject = objectGoal;
         bMovingToLocation = true;

@@ -3,28 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 
+[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class LayerSwitching : MonoBehaviour
 {
-    private PlayerControls playerControls;
-
     [SerializeField]
-    private LayerInfo currentLayer;
+    private int layer = 0;
 
-    void Awake()
+    private float maxY = 0f;
+
+    private void Awake()
     {
-        playerControls = new PlayerControls();
-        playerControls.LayerMap.Switch.performed += SwitchLayer;
-        playerControls.LayerMap.Enable();
+        maxY = GetComponent<BoxCollider2D>().bounds.max.y;
     }
 
-    private void SwitchLayer(CallbackContext ctx)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        int dir = ctx.ReadValue<int>();
-        currentLayer = currentLayer.SwitchActiveLayer(dir);
-    }
-
-    private void OnDestroy()
-    {
-        playerControls.Disable();
+        if (collision.gameObject.TryGetComponent<LayerTraveler>(out var layerTraveler))
+        {
+            if (collision.bounds.min.y >= maxY)
+            {
+                layerTraveler.SwitchLayer(layer);
+            }
+            else
+            {
+                layerTraveler.SwitchLayer(layer - 1);
+            }
+        }
     }
 }
