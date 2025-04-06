@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 using static UnityEngine.InputSystem.InputAction;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(CapsuleCollider2D))]
@@ -21,6 +23,12 @@ public class PlayerMovement : Singleton<PlayerMovement>
     bool bGrounded = false;
     bool bAscending = false;
     float prevYVel = 0.0f;
+    private int currentDepth = 0;
+    private bool bMovingToLocation = false;
+    private Vector3 goalLocation = Vector3.zero;
+    private Vector3 automatedMoveDir = Vector3.zero;
+    private float moveAcceptanceRadius = 0.0f;
+    private LayerObject moveToObject;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Awake()
@@ -33,6 +41,8 @@ public class PlayerMovement : Singleton<PlayerMovement>
         controls.PlayerActions.Movement.Enable();
         controls.PlayerActions.Jump.performed += Jump;
         controls.PlayerActions.Jump.Enable();
+        controls.PlayerActions.ClickAction.performed += ClickAction;
+        controls.PlayerActions.ClickAction.Enable();
     }
 
     void Move(CallbackContext ctx)
@@ -66,28 +76,60 @@ public class PlayerMovement : Singleton<PlayerMovement>
         }
     }
 
+    void ClickAction(CallbackContext ctx)
+    {
+        RaycastHit2D hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()));
+        if (!hit.collider) return;
+
+        if (hit.collider.gameObject.TryGetComponent<MovableObject>(out var movable))
+        {
+            movable.Clicked();
+        }
+    }
+
     private void FixedUpdate()
     {
-        bool bFrameGrounded = isGrounded() && Mathf.Abs(rb.linearVelocityY) <= .5f;
-        if (bAscending)
+        if (bMovingToLocation)
         {
-            if (prevYVel > 0 && rb.linearVelocityY <= 0)
+            if (Vector3.Distance(transform.position, goalLocation) <= moveAcceptanceRadius)
             {
-                bAscending = false;
-                Descending(true);
+                transform.position = goalLocation;
+                bMovingToLocation = false;
+                rb.gravityScale = 1.0f;
+                col.enabled = true;
+                if (moveToObject)
+                {
+                    moveToObject.Interact();
+                }
             }
-            prevYVel = rb.linearVelocityY;
+            else
+            {
+                transform.position = Vector3.Lerp(transform.position, goalLocation, speed * Time.deltaTime);
+            }
         }
-        if (bFrameGrounded && !bGrounded)
+        else
         {
-            Descending(false);
-            rb.linearVelocityX = moveDir * speed;
+                bool bFrameGrounded = isGrounded() && Mathf.Abs(rb.linearVelocityY) <= .5f;
+            if (bAscending)
+            {
+                if (prevYVel > 0 && rb.linearVelocityY <= 0)
+                {
+                    bAscending = false;
+                    Descending(true);
+                }
+                prevYVel = rb.linearVelocityY;
+            }
+            if (bFrameGrounded && !bGrounded)
+            {
+                Descending(false);
+                rb.linearVelocityX = moveDir * speed;
+            }
+            if (moveDir != 0)
+            {
+                rb.linearVelocityX = moveDir * speed;
+            }
+            bGrounded = bFrameGrounded;
         }
-        if (moveDir != 0)
-        {
-            rb.linearVelocityX = moveDir * speed;
-        }
-        bGrounded = bFrameGrounded;
     }
 
     private void OnDestroy()
@@ -103,5 +145,32 @@ public class PlayerMovement : Singleton<PlayerMovement>
     public float GetPlayerLow()
     {
         return col.bounds.min.y;
+    }
+
+    public int GetPlayerLayer()
+    {
+        return currentDepth;
+    }
+
+    public void MoveToLocation(Vector2 location, bool bIgnoreCollision, float acceptanceRadius, LayerObject objectGoal)
+    {
+        col.enabled = !bIgnoreCollision;
+        if (bIgnoreCollision)
+            rb.gravityScale = 0.0f;
+        goalLocation = new Vector3(location.x, location.y, transform.position.z);
+        automatedMoveDir = goalLocation - transform.position;
+        moveAcceptanceRadius = acceptanceRadius;
+        moveToObject = objectGoal;
+        bMovingToLocation = true;
+    }
+
+    public float GetSpeed()
+    {
+        return speed;
+    }
+
+    public float GetVelocityX()
+    {
+        return rb.linearVelocityX;
     }
 }

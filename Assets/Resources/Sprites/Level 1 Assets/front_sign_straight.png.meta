@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8e567954d4b3d1346895698ed2c9579a
+guid: 9d6974a0bfd28ce4997698d831b89b81
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3043825211651959131
-    second: LD57Draft_0
+      213: -8362504920726162479
+    second: front_sign_straight_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: LD57Draft_0
+      name: front_sign_straight_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
+        x: 169
+        y: 14
+        width: 429
+        height: 739
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b59a4e237e6dd3a20800000000000000
-      internalID: 3043825211651959131
+      spriteID: 1d339afb41a62fb80800000000000000
+      internalID: -8362504920726162479
       vertices: []
       indices: 
       edges: []

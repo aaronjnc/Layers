@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,16 @@ public class LayerObject : MonoBehaviour
     [SerializeField]
     protected EScale scale;
 
-    protected PolygonCollider2D col;
+    [SerializeField]
+    protected Vector3 goalLocation = Vector3.zero;
+
+    [SerializeField]
+    protected float goalAcceptanceRadius = 0f;
+
+    protected bool bLocked = false;
+
+    [SerializeField]
+    private List<Component> destroyComponents = new();
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -29,13 +39,20 @@ public class LayerObject : MonoBehaviour
 
     protected virtual void CheckCollider()
     {
-        if (parentLayer.GetLayerDepth() >= 0 && col.enabled == false)
+    }
+
+    public virtual void Lock()
+    {
+        bLocked = true;
+        Destroy(this);
+        foreach (Component c in destroyComponents)
         {
-            col.enabled = true;
+            Destroy(c);
         }
-        else if (parentLayer.GetLayerDepth() < 0 && col.enabled == true)
-        {
-            col.enabled = false;
-        }
+    }
+
+    public virtual void Interact()
+    {
+        return;
     }
 }
