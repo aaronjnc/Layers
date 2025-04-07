@@ -418,6 +418,7 @@ GameObject:
   - component: {fileID: 591885175}
   - component: {fileID: 591885174}
   - component: {fileID: 591885173}
+  - component: {fileID: 591885178}
   m_Layer: 8
   m_Name: Square (1)
   m_TagString: Untagged
@@ -461,7 +462,7 @@ MonoBehaviour:
   - {fileID: 591885176}
   bPrereqMet: 1
   interactLayer: 1
-  acceptanceRadius: 1.5
+  acceptanceRadius: 1.3
   relMoveLoc: 1.29
 --- !u!60 &591885174
 PolygonCollider2D:
@@ -642,6 +643,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &591885178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591885171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a88f85100f9c1042b5e2f24931c7cd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bAutomateApproach: 0
+  acceptanceRadius: 0
+  relMoveLoc: {x: 0, y: 0, z: 0}
+  bFlipApproach: 0
+  interactLayer: 0
+  bPrereqMet: 0
 --- !u!1 &635332102
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,6 +675,7 @@ GameObject:
   - component: {fileID: 635332107}
   - component: {fileID: 635332106}
   - component: {fileID: 635332105}
+  - component: {fileID: 635332109}
   m_Layer: 8
   m_Name: Square
   m_TagString: Untagged
@@ -754,7 +774,7 @@ MonoBehaviour:
   - {fileID: 635332108}
   bPrereqMet: 1
   interactLayer: 0
-  acceptanceRadius: 1.5
+  acceptanceRadius: 1.3
   relMoveLoc: 1.29
 --- !u!60 &635332106
 PolygonCollider2D:
@@ -880,6 +900,24 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &635332109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635332102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a88f85100f9c1042b5e2f24931c7cd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bAutomateApproach: 1
+  acceptanceRadius: 0.6
+  relMoveLoc: {x: 1.31, y: 0, z: 0}
+  bFlipApproach: 1
+  interactLayer: 0
+  bPrereqMet: 1
 --- !u!1 &671746975
 GameObject:
   m_ObjectHideFlags: 0
@@ -1318,6 +1356,7 @@ GameObject:
   - component: {fileID: 814393915}
   - component: {fileID: 814393914}
   - component: {fileID: 814393920}
+  - component: {fileID: 814393921}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -1518,6 +1557,19 @@ MonoBehaviour:
   currentLayer: 0
   shrinkSpeed: 5
   acceptanceScale: 0.01
+--- !u!114 &814393921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814393913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c6f47a29bbe67d42985bfdea12639a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
 --- !u!1 &890795469
 GameObject:
   m_ObjectHideFlags: 0

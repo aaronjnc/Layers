@@ -1,3 +1,4 @@
+using System;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -5,8 +6,9 @@ using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.DefaultInputActions;
 using static UnityEngine.InputSystem.InputAction;
 
+[RequireComponent(typeof(MoveToInteractable))]
 [RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D))]
-public class MovableObject : LayerObject
+public class MovableObject : LayerObject, InteractableInterface
 {
 
     [SerializeField]
@@ -15,6 +17,7 @@ public class MovableObject : LayerObject
 
     private BoxCollider2D triggerCollider;
     private Rigidbody2D rb;
+    private MoveToInteractable moveToInteractable;
     
     private PlayerControls controls;
 
@@ -34,6 +37,8 @@ public class MovableObject : LayerObject
         controls = new PlayerControls();
         controls.PlayerActions.Movement.performed += Move;
         controls.PlayerActions.Movement.canceled += StopMove;
+        moveToInteractable = GetComponent<MoveToInteractable>();
+        moveToInteractable.AssignCallback(Interact);
     }
 
     protected override void Start()
@@ -45,32 +50,6 @@ public class MovableObject : LayerObject
         triggerCollider.enabled = false;
         base.Start();
         speed = PlayerMovement.Instance.GetSpeed();
-    }
-
-    public void Clicked()
-    {
-        if (!bPrereqMet || interactLayer != PlayerMovement.Instance.GetPlayerLayer() || bLocked)
-        {
-            return;
-        }
-        Vector3 newMoveLoc = PlayerMovement.Instance.transform.position;
-        if (transform.position.x > newMoveLoc.x)
-        {
-            newMoveLoc.x = transform.position.x - relMoveLoc;
-        }
-        else
-        {
-            newMoveLoc.x = transform.position.x + relMoveLoc;
-        }      
-        if (Vector3.Distance(newMoveLoc, PlayerMovement.Instance.transform.position) <= acceptanceRadius)
-        {
-            PlayerMovement.Instance.transform.position = newMoveLoc;
-            Interact();
-        }
-        else
-        {
-            PlayerMovement.Instance.MoveToLocation(newMoveLoc, false, false, acceptanceRadius, SwitchMovable);
-        }
     }
 
     private void Move(CallbackContext ctx)
@@ -92,7 +71,7 @@ public class MovableObject : LayerObject
         {
             if (Vector3.Distance(goalLocation, transform.position) <= goalAcceptanceRadius)
             {
-                Interact();
+                SwitchMovable();
                 Lock();
             }
             else if (moveDir != 0)
@@ -123,7 +102,7 @@ public class MovableObject : LayerObject
 
     public void FulfillPrereq()
     {
-        bPrereqMet = true;
+        moveToInteractable.SetPrereq(true);
     }
     
     private void OnDestroy()
@@ -146,9 +125,17 @@ public class MovableObject : LayerObject
 
     protected void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, acceptanceRadius);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, goalAcceptanceRadius);
+    }
+
+    public void Interact()
+    {
+        SwitchMovable();
+    }
+
+    public MoveToInteractable GetMoveToInteractable()
+    {
+        return moveToInteractable;
     }
 }

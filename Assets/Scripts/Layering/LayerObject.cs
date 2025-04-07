@@ -50,9 +50,4 @@ public class LayerObject : MonoBehaviour
             Destroy(c);
         }
     }
-
-    public virtual void Interact()
-    {
-        return;
-    }
 }

@@ -8,6 +8,7 @@ using static UnityEngine.InputSystem.InputAction;
 [RequireComponent(typeof(CapsuleCollider2D))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(LayerTraveler))]
+[RequireComponent(typeof(MoveTo))]
 public class PlayerMovement : Singleton<PlayerMovement>
 {
 
@@ -29,9 +30,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
     bool bAscending = false;
     float prevYVel = 0.0f;
     private bool bMovingToLocation = false;
-    private Vector3 goalLocation = Vector3.zero;
-    private float moveAcceptanceRadius = 0.0f;
-    private Action callbackAction;
+    private MoveTo moveToLocation;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Awake()
@@ -39,6 +38,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
         layerTraveler = GetComponent<LayerTraveler>();
+        moveToLocation = GetComponent<MoveTo>();
         controls = new PlayerControls();
         controls.PlayerActions.Movement.performed += Move;
         controls.PlayerActions.Movement.canceled += StopMove;
@@ -85,31 +85,23 @@ public class PlayerMovement : Singleton<PlayerMovement>
         RaycastHit2D hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()));
         if (!hit.collider) return;
 
-        if (hit.collider.gameObject.TryGetComponent<MovableObject>(out var movable))
+        if (hit.collider.gameObject.TryGetComponent<InteractableInterface>(out var interactable))
         {
-            movable.Clicked();
+            MoveToInteractable moveToInteractable = interactable.GetMoveToInteractable();
+            if (moveToInteractable)
+            {
+                MoveToLocation(moveToInteractable);
+            }
+            else
+            {
+                interactable.Interact();
+            }
         }
     }
 
     private void FixedUpdate()
     {
-        if (bMovingToLocation)
-        {
-            if (Vector3.Distance(transform.position, goalLocation) <= moveAcceptanceRadius)
-            {
-                transform.position = goalLocation;
-                bMovingToLocation = false;
-                rb.gravityScale = 1.0f;
-                col.enabled = true;
-                callbackAction?.Invoke();
-                callbackAction = null;
-            }
-            else
-            {
-                transform.position = Vector3.Lerp(transform.position, goalLocation, speed * Time.deltaTime);
-            }
-        }
-        else
+        if (!bMovingToLocation)
         {
             bool bFrameGrounded = isGrounded() && Mathf.Abs(rb.linearVelocityY) <= .5f;
             if (bAscending)
@@ -159,20 +151,29 @@ public class PlayerMovement : Singleton<PlayerMovement>
         return layerTraveler.GetCurrentLayer();
     }
 
-    public void MoveToLocation(Vector3 location, bool bIngoreCollision, float acceptanceRadius)
+    public void MoveToLocation(MoveToInteractable moveToInteractable)
     {
+        if (moveToInteractable.isApproachAutomated() && moveToInteractable.CanMoveTo())
+        {
+            MoveToLocation(moveToInteractable.GetMoveLoc(), false, moveToInteractable.GetAcceptanceRadius(), moveToInteractable.callback);
+        }
+    }
 
+    public void MoveToLocation(Vector3 location, bool bIgnoreCollision, float acceptanceRadius, Action callback)
+    {
+        MoveToLocation(location, bIgnoreCollision, false, acceptanceRadius, callback);
     }
 
     public void MoveToLocation(Vector3 location, bool bIgnoreCollision, bool bIgnoreGravity, float acceptanceRadius, Action callback)
     {
-        col.enabled = !bIgnoreCollision;
-        if (bIgnoreGravity)
-            rb.gravityScale = 0.0f;
-        goalLocation = location;
-        moveAcceptanceRadius = acceptanceRadius;
-        callbackAction = callback;
+        callback += ReachDestination;
+        moveToLocation.MoveToLocation(location, bIgnoreCollision, bIgnoreGravity, acceptanceRadius, callback);
         bMovingToLocation = true;
+    }
+
+    public void ReachDestination()
+    {
+        bMovingToLocation = false;
     }
 
     public float GetSpeed()
