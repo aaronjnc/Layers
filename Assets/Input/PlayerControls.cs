@@ -167,6 +167,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Descend"",
+                    ""type"": ""Button"",
+                    ""id"": ""7e24615a-fd38-45e9-9f68-decfbb79ff5a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -224,6 +233,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""ClickAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""25519a0c-5039-4c22-a2b7-fc3d3a515452"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Descend"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -238,6 +258,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerActions_Movement = m_PlayerActions.FindAction("Movement", throwIfNotFound: true);
         m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
         m_PlayerActions_ClickAction = m_PlayerActions.FindAction("ClickAction", throwIfNotFound: true);
+        m_PlayerActions_Descend = m_PlayerActions.FindAction("Descend", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -418,6 +439,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Movement;
     private readonly InputAction m_PlayerActions_Jump;
     private readonly InputAction m_PlayerActions_ClickAction;
+    private readonly InputAction m_PlayerActions_Descend;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerActions".
     /// </summary>
@@ -441,6 +463,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerActions/ClickAction".
         /// </summary>
         public InputAction @ClickAction => m_Wrapper.m_PlayerActions_ClickAction;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerActions/Descend".
+        /// </summary>
+        public InputAction @Descend => m_Wrapper.m_PlayerActions_Descend;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -476,6 +502,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ClickAction.started += instance.OnClickAction;
             @ClickAction.performed += instance.OnClickAction;
             @ClickAction.canceled += instance.OnClickAction;
+            @Descend.started += instance.OnDescend;
+            @Descend.performed += instance.OnDescend;
+            @Descend.canceled += instance.OnDescend;
         }
 
         /// <summary>
@@ -496,6 +525,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ClickAction.started -= instance.OnClickAction;
             @ClickAction.performed -= instance.OnClickAction;
             @ClickAction.canceled -= instance.OnClickAction;
+            @Descend.started -= instance.OnDescend;
+            @Descend.performed -= instance.OnDescend;
+            @Descend.canceled -= instance.OnDescend;
         }
 
         /// <summary>
@@ -572,5 +604,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnClickAction(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Descend" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDescend(InputAction.CallbackContext context);
     }
 }

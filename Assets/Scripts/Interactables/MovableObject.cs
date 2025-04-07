@@ -69,7 +69,7 @@ public class MovableObject : LayerObject
         }
         else
         {
-            PlayerMovement.Instance.MoveToLocation(newMoveLoc, false, acceptanceRadius, this);
+            PlayerMovement.Instance.MoveToLocation(newMoveLoc, false, false, acceptanceRadius, SwitchMovable);
         }
     }
 
@@ -131,9 +131,8 @@ public class MovableObject : LayerObject
         controls.Disable();
     }
 
-    public override void Interact()
+    public void SwitchMovable()
     {
-        base.Interact();
         bMovable = !bMovable;
         if (bMovable)
         {

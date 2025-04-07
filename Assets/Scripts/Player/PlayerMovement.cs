@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -30,7 +31,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
     private bool bMovingToLocation = false;
     private Vector3 goalLocation = Vector3.zero;
     private float moveAcceptanceRadius = 0.0f;
-    private LayerObject moveToObject;
+    private Action callbackAction;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Awake()
@@ -100,10 +101,8 @@ public class PlayerMovement : Singleton<PlayerMovement>
                 bMovingToLocation = false;
                 rb.gravityScale = 1.0f;
                 col.enabled = true;
-                if (moveToObject)
-                {
-                    moveToObject.Interact();
-                }
+                callbackAction?.Invoke();
+                callbackAction = null;
             }
             else
             {
@@ -160,14 +159,19 @@ public class PlayerMovement : Singleton<PlayerMovement>
         return layerTraveler.GetCurrentLayer();
     }
 
-    public void MoveToLocation(Vector2 location, bool bIgnoreCollision, float acceptanceRadius, LayerObject objectGoal)
+    public void MoveToLocation(Vector3 location, bool bIngoreCollision, float acceptanceRadius)
+    {
+
+    }
+
+    public void MoveToLocation(Vector3 location, bool bIgnoreCollision, bool bIgnoreGravity, float acceptanceRadius, Action callback)
     {
         col.enabled = !bIgnoreCollision;
-        if (bIgnoreCollision)
+        if (bIgnoreGravity)
             rb.gravityScale = 0.0f;
-        goalLocation = new Vector3(location.x, location.y, transform.position.z);
+        goalLocation = location;
         moveAcceptanceRadius = acceptanceRadius;
-        moveToObject = objectGoal;
+        callbackAction = callback;
         bMovingToLocation = true;
     }
 
