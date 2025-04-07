@@ -2,6 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(LayerTraveler))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Item : MonoBehaviour
 {
     [SerializeField]
@@ -10,6 +11,11 @@ public class Item : MonoBehaviour
     private Vector3 heldRotation = Vector3.zero;
 
     private Rigidbody2D rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     public void Pickup()
     {

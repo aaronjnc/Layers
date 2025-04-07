@@ -4,6 +4,8 @@ public class PlayerInventory : Singleton<PlayerInventory>
 {
     private Item currentlyHeld;
 
+    public Item GetHeldItem() { return currentlyHeld; }
+
     public void GiveItem(GameObject item)
     {
         if (currentlyHeld != null)
@@ -11,7 +13,7 @@ public class PlayerInventory : Singleton<PlayerInventory>
             Drop();
         }
         currentlyHeld = item.GetComponent<Item>();
-        currentlyHeld.gameObject.transform.SetParent(gameObject.transform, false);
+        item.transform.SetParent(gameObject.transform, false);
         currentlyHeld.Pickup();
     }
 
@@ -19,11 +21,13 @@ public class PlayerInventory : Singleton<PlayerInventory>
     {
         currentlyHeld.gameObject.transform.SetParent(null);
         currentlyHeld.Drop();
+        currentlyHeld = null;
     }
 
     public void Toss()
     {
         currentlyHeld.gameObject.transform.SetParent(null);
         currentlyHeld.Toss();
+        currentlyHeld = null;
     }
 }

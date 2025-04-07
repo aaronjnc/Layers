@@ -9,6 +9,7 @@ using static UnityEngine.InputSystem.InputAction;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(LayerTraveler))]
 [RequireComponent(typeof(MoveTo))]
+[RequireComponent(typeof(PlayerInventory))]
 public class PlayerMovement : Singleton<PlayerMovement>
 {
 
@@ -19,6 +20,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
     private PlayerControls controls;
     private CapsuleCollider2D col;
     private LayerTraveler layerTraveler;
+    private PlayerInventory inventory;
     [SerializeField]
     private float speed = 3.0f;
     [SerializeField]
@@ -39,6 +41,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
         col = GetComponent<CapsuleCollider2D>();
         layerTraveler = GetComponent<LayerTraveler>();
         moveToLocation = GetComponent<MoveTo>();
+        inventory = GetComponent<PlayerInventory>();
         controls = new PlayerControls();
         controls.PlayerActions.Movement.performed += Move;
         controls.PlayerActions.Movement.canceled += StopMove;
@@ -94,7 +97,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
             }
             else
             {
-                interactable.Interact();
+                interactable.Interact(inventory.GetHeldItem());
             }
         }
     }

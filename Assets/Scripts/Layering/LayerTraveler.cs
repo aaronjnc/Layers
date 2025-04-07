@@ -34,7 +34,12 @@ public class LayerTraveler : MonoBehaviour
 
     public void SwitchLayer(int layer)
     {
-        if (currentLayer == layer)
+        if (layer >= layerScales.Count)
+        {
+            Debug.LogError("Invalid layer " + layer);
+            return;
+        }
+        if (currentLayer == layer && gameObject.transform.lossyScale == layerScales[currentLayer])
         {
             return;
         }

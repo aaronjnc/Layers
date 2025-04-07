@@ -1,24 +1,19 @@
 using UnityEngine;
 
+[RequireComponent(typeof(MovableObject))]
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(MoveToInteractable))]
 [RequireComponent(typeof(ObjectInteractionManager))]
-public class Chest : MonoBehaviour, InteractableInterface
+public class SignPost : MonoBehaviour, InteractableInterface
 {
     [SerializeField]
-    private Sprite newSprite;
-    private MoveToInteractable moveToInteractable;
+    private Sprite fixedSign;
     private SpriteRenderer spriteRenderer;
-
-    [SerializeField]
-    private GameObject givePlayer;
+    private MoveToInteractable moveToInteractable;
 
     private void Awake()
     {
         moveToInteractable = GetComponent<MoveToInteractable>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        moveToInteractable.AssignCallback(FinishMove);
     }
 
     public MoveToInteractable GetMoveToInteractable()
@@ -26,16 +21,9 @@ public class Chest : MonoBehaviour, InteractableInterface
         return moveToInteractable;
     }
 
-    public void FinishMove()
-    {
-        Interact(null);
-    }
-
     public void Interact(Item heldItem)
     {
-        spriteRenderer.sprite = newSprite;
-        GameObject spawnedObj = Instantiate(givePlayer);
-        PlayerInventory.Instance.GiveItem(spawnedObj);
+        throw new System.NotImplementedException();
     }
 
     public bool CanMoveTo()

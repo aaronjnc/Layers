@@ -3,6 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(MoveToInteractable))]
 [RequireComponent(typeof(MoveTo))]
+[RequireComponent(typeof(ObjectInteractionManager))]
 public class Boulder : MonoBehaviour, InteractableInterface
 {
     private MoveTo moveToLocation;
@@ -21,6 +22,9 @@ public class Boulder : MonoBehaviour, InteractableInterface
     private GameObject layerTraveler;
 
     [SerializeField]
+    private Trashcan trashCan;
+
+    [SerializeField]
     private float rotationSpeed;
 
     private bool bRotating = false;
@@ -29,10 +33,15 @@ public class Boulder : MonoBehaviour, InteractableInterface
     {
         moveToLocation = GetComponent<MoveTo>();
         moveToInteract = GetComponent<MoveToInteractable>();
-        moveToInteract.AssignCallback(Interact);
+        moveToInteract.AssignCallback(FinishMove);
     }
 
-    public void Interact()
+    public void FinishMove()
+    {
+        Interact(null);
+    }
+
+    public void Interact(Item heldItem)
     {
         bRotating = true;
         moveToLocation.MoveToLocation(goalLoc, true, acceptanceRadius, BoulderStop);
@@ -43,6 +52,7 @@ public class Boulder : MonoBehaviour, InteractableInterface
         bRotating = false;
         stairs.SetActive(true);
         layerTraveler.SetActive(true);
+        trashCan.Smash();
         Destroy(gameObject);
     }
 
@@ -57,5 +67,10 @@ public class Boulder : MonoBehaviour, InteractableInterface
     public MoveToInteractable GetMoveToInteractable()
     {
         return moveToInteract;
+    }
+
+    public bool CanMoveTo()
+    {
+        throw new NotImplementedException();
     }
 }
