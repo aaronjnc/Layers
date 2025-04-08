@@ -25,6 +25,9 @@ public class Boulder : MonoBehaviour, InteractableInterface
     private Trashcan trashCan;
 
     [SerializeField]
+    private FishingRod fishingRod;
+
+    [SerializeField]
     private float rotationSpeed;
 
     private bool bRotating = false;
@@ -33,7 +36,6 @@ public class Boulder : MonoBehaviour, InteractableInterface
     {
         moveToLocation = GetComponent<MoveTo>();
         moveToInteract = GetComponent<MoveToInteractable>();
-        moveToInteract.AssignCallback(FinishMove);
     }
 
     public void FinishMove()
@@ -53,6 +55,7 @@ public class Boulder : MonoBehaviour, InteractableInterface
         stairs.SetActive(true);
         layerTraveler.SetActive(true);
         trashCan.Smash();
+        fishingRod.TrashcanBurst();
         Destroy(gameObject);
     }
 
@@ -71,6 +74,11 @@ public class Boulder : MonoBehaviour, InteractableInterface
 
     public bool CanMoveTo()
     {
-        throw new NotImplementedException();
+        return moveToInteract.CanMoveTo();
+    }
+
+    public void AssignMoveToCallback()
+    {
+        moveToInteract.AssignCallback(FinishMove);
     }
 }

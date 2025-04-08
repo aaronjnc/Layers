@@ -7,7 +7,7 @@ using static UnityEngine.InputSystem.DefaultInputActions;
 using static UnityEngine.InputSystem.InputAction;
 
 [RequireComponent(typeof(MoveToInteractable))]
-[RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D))]
+[RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D))] //trigger collider
 [RequireComponent(typeof(ObjectInteractionManager))]
 public class MovableObject : LayerObject, InteractableInterface
 {
@@ -39,7 +39,6 @@ public class MovableObject : LayerObject, InteractableInterface
         controls.PlayerActions.Movement.performed += Move;
         controls.PlayerActions.Movement.canceled += StopMove;
         moveToInteractable = GetComponent<MoveToInteractable>();
-        moveToInteractable.AssignCallback(FinishMove);
     }
 
     protected override void Start()
@@ -148,5 +147,10 @@ public class MovableObject : LayerObject, InteractableInterface
     public bool CanMoveTo()
     {
         return moveToInteractable.CanMoveTo();
+    }
+
+    public void AssignMoveToCallback()
+    {
+        moveToInteractable.AssignCallback(FinishMove);
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class PlayerInventory : Singleton<PlayerInventory>
 {
@@ -13,13 +14,28 @@ public class PlayerInventory : Singleton<PlayerInventory>
             Drop();
         }
         currentlyHeld = item.GetComponent<Item>();
-        item.transform.SetParent(gameObject.transform, false);
         currentlyHeld.Pickup();
+        foreach (Collider2D col in item.GetComponents<Collider2D>())
+        {
+            if (!col.isTrigger)
+            {
+                col.enabled = false;
+            }
+        }
+        item.transform.SetParent(gameObject.transform, false);
+
     }
 
     public void Drop()
     {
         currentlyHeld.gameObject.transform.SetParent(null);
+        foreach (Collider2D col in currentlyHeld.gameObject.GetComponents<Collider2D>())
+        {
+            if (!col.isTrigger)
+            {
+                col.enabled = false;
+            }
+        }
         currentlyHeld.Drop();
         currentlyHeld = null;
     }

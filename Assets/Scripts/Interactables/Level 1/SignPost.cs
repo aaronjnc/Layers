@@ -8,12 +8,15 @@ public class SignPost : MonoBehaviour, InteractableInterface
 {
     [SerializeField]
     private Sprite fixedSign;
+    [SerializeField]
+    private EItems requiredItem;
     private SpriteRenderer spriteRenderer;
     private MoveToInteractable moveToInteractable;
 
     private void Awake()
     {
         moveToInteractable = GetComponent<MoveToInteractable>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public MoveToInteractable GetMoveToInteractable()
@@ -23,11 +26,26 @@ public class SignPost : MonoBehaviour, InteractableInterface
 
     public void Interact(Item heldItem)
     {
-        throw new System.NotImplementedException();
+        if (heldItem.GetItem() == requiredItem)
+        {
+            spriteRenderer.sprite = fixedSign;
+            GetComponent<ObjectInteractionManager>().RemoveTop();
+            Destroy(this);
+        }
     }
 
     public bool CanMoveTo()
     {
-        throw new System.NotImplementedException();
+        return moveToInteractable.CanMoveTo();
+    }
+
+    public void AssignMoveToCallback()
+    {
+        moveToInteractable.AssignCallback(FinishMove);
+    }
+
+    public void FinishMove()
+    {
+        Interact(PlayerInventory.Instance.GetHeldItem());
     }
 }

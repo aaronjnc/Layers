@@ -50,7 +50,6 @@ public class MoveTo : MonoBehaviour
                 rb.gravityScale = 1.0f;
                 col.enabled = true;
                 callbackAction?.Invoke();
-                callbackAction = null;
             }
             else
             {

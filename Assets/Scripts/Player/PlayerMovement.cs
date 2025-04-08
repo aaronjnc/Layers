@@ -88,18 +88,28 @@ public class PlayerMovement : Singleton<PlayerMovement>
         RaycastHit2D hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()));
         if (!hit.collider) return;
 
-        if (hit.collider.gameObject.TryGetComponent<InteractableInterface>(out var interactable))
+        Debug.Log("Clicked " + hit.collider.gameObject.name);
+
+        if (hit.collider.gameObject.TryGetComponent<ObjectInteractionManager>(out var interactionManager))
         {
-            MoveToInteractable moveToInteractable = interactable.GetMoveToInteractable();
-            if (moveToInteractable)
+            InteractableInterface interactable;
+            if ((interactable = interactionManager.GetInteractable()) != null)
             {
-                MoveToLocation(moveToInteractable);
-            }
-            else
-            {
-                interactable.Interact(inventory.GetHeldItem());
+                MoveToInteractable moveToInteractable = interactable.GetMoveToInteractable();
+                if (moveToInteractable)
+                {
+                    Debug.Log("Move to");
+                    MoveToLocation(moveToInteractable);
+                }
+                else
+                {
+                    Debug.Log("Interact");
+                    interactable.Interact(inventory.GetHeldItem());
+                }
             }
         }
+
+
     }
 
     private void FixedUpdate()

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class MoveToInteractable : MonoBehaviour
 {
     [SerializeField]

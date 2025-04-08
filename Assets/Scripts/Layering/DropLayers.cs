@@ -7,42 +7,49 @@ using static UnityEngine.InputSystem.InputAction;
 public class DropLayers : MonoBehaviour
 {
     [SerializeField]
-    private Vector3 lowerPosition;
+    protected Vector3 lowerPosition;
 
     [SerializeField]
-    private float acceptanceRadius;
+    protected float acceptanceRadius;
 
     [SerializeField]
-    private float startX;
+    protected float startX;
 
     [SerializeField]
-    private List<Collider2D> disableColliders = new List<Collider2D>();
+    protected List<Collider2D> disableColliders = new List<Collider2D>();
 
     PlayerControls controls;
 
-    private void Awake()
+    protected bool bCanDescend = true;
+
+    protected virtual void Awake()
     {
         controls = new PlayerControls();
         controls.PlayerActions.Descend.performed += Descend;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected void OnTriggerEnter2D(Collider2D collision)
     {
-        controls.PlayerActions.Descend.Enable();
+        controls?.PlayerActions.Descend.Enable();
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    protected void OnTriggerExit2D(Collider2D collision)
     {
-        controls.PlayerActions.Descend.Disable();
+        controls?.PlayerActions.Descend.Disable();
     }
 
-    private void Descend(CallbackContext ctx)
+    protected void Descend(CallbackContext ctx)
     {
-        Vector3 goalLoc = new Vector3(startX, transform.position.y, transform.position.z);
+        if (!bCanDescend)
+        {
+            return;
+        }
+        Vector3 goalLoc = new Vector3(startX, PlayerMovement.Instance.transform.position.y, PlayerMovement.Instance.transform.position.z);
         PlayerMovement.Instance.MoveToLocation(goalLoc, false, false, acceptanceRadius, StopMoveToDescent);
+        bCanDescend = false;
     }
 
-    private void StopMoveToDescent()
+    protected virtual void StopMoveToDescent()
     {
         foreach (Collider2D col in disableColliders)
         {
@@ -51,20 +58,21 @@ public class DropLayers : MonoBehaviour
         PlayerMovement.Instance.MoveToLocation(lowerPosition, false, true, acceptanceRadius, StopDescent);
     }
 
-    private void OnDestroy()
+    protected void OnDestroy()
     {
-        controls.PlayerActions.Descend.Disable();
+        controls?.PlayerActions.Descend.Disable();
     }
 
-    public void StopDescent()
+    public virtual void StopDescent()
     {
         foreach (Collider2D col in disableColliders)
         {
             col.enabled = true;
         }
+        bCanDescend = true;
     }
 
-    private void OnDrawGizmos()
+    protected void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, acceptanceRadius);
     }

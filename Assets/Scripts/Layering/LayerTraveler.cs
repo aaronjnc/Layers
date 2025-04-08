@@ -49,6 +49,14 @@ public class LayerTraveler : MonoBehaviour
         {
             spriteRenderer.sprite = layerSprites[layer];
         }
+        /*if (gameObject == PlayerMovement.Instance.gameObject)
+        {
+            LayerTraveler[] layerTravelers = gameObject.GetComponentsInChildren<LayerTraveler>();
+            foreach (LayerTraveler layerTraveler in layerTravelers)
+            {
+                layerTraveler.SwitchLayer(layer);
+            }
+        }*/
     }
 
     private void FixedUpdate()

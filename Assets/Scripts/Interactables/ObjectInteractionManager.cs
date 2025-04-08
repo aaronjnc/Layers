@@ -6,7 +6,7 @@ using UnityEngine;
 public class ObjectInteractionManager : MonoBehaviour
 {
     [SerializeField]
-    private List<InteractableInterface> interactables = new();
+    private List<Component> interactables = new();
 
     public void InteractList(Item heldItem)
     {
@@ -14,5 +14,22 @@ public class ObjectInteractionManager : MonoBehaviour
         {
             interactable.Interact(heldItem);
         }
+    }
+
+    public InteractableInterface GetInteractable()
+    {
+        InteractableInterface interactable = interactables[0] as InteractableInterface;
+        interactable.AssignMoveToCallback();
+        return interactable;
+    }
+
+    public bool CanMoveTo()
+    {
+        return (interactables[0] as InteractableInterface).GetMoveToInteractable();
+    }
+
+    public void RemoveTop()
+    {
+        interactables.RemoveAt(0);
     }
 }

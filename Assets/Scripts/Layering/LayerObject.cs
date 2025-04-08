@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Sprites;
 
-[RequireComponent(typeof(PolygonCollider2D))]
 public class LayerObject : MonoBehaviour
 {
 

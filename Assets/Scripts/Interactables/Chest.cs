@@ -18,7 +18,6 @@ public class Chest : MonoBehaviour, InteractableInterface
     {
         moveToInteractable = GetComponent<MoveToInteractable>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        moveToInteractable.AssignCallback(FinishMove);
     }
 
     public MoveToInteractable GetMoveToInteractable()
@@ -40,6 +39,11 @@ public class Chest : MonoBehaviour, InteractableInterface
 
     public bool CanMoveTo()
     {
-        throw new System.NotImplementedException();
+        return moveToInteractable.CanMoveTo();
+    }
+
+    public void AssignMoveToCallback()
+    {
+        moveToInteractable.AssignCallback(FinishMove);
     }
 }
