@@ -19,7 +19,7 @@ public class LayerTraveler : MonoBehaviour
     [SerializeField]
     private float shrinkSpeed = 0.5f;
 
-    private bool bScaling = true;
+    private bool bScaling = false;
 
     private Collider2D col;
 

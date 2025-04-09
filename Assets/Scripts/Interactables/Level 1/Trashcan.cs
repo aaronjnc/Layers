@@ -5,9 +5,15 @@ using UnityEngine;
 public class Trashcan : MonoBehaviour
 {
     [SerializeField]
-    private Sprite brokenTrashcan;
+    private MoveTo startOrb;
     [SerializeField]
-    private List<GameObject> enableGameObjects = new();
+    private GameObject endOrb;
+    [SerializeField]
+    private MoveTo startBridge;
+    [SerializeField]
+    private GameObject endBridge;
+    [SerializeField]
+    private Sprite brokenTrashcan;
 
     private SpriteRenderer spriteRenderer;
 
@@ -18,11 +24,20 @@ public class Trashcan : MonoBehaviour
 
     public void Smash()
     {
-        foreach (GameObject go in enableGameObjects)
-        {
-            go.SetActive(true);
-        }
+        startOrb.MoveToLocation(endOrb.transform.position, true, .2f, OrbStop);
+        startBridge.MoveToLocation(endBridge.transform.position, true, .2f, BridgeStop);
         spriteRenderer.sprite = brokenTrashcan;
-        transform.localScale = new Vector3(.2f, .2f, 1f);
+    }
+
+    public void OrbStop()
+    {
+        Destroy(startOrb.gameObject);
+        endOrb.SetActive(true);
+    }
+
+    public void BridgeStop()
+    {
+        Destroy(endBridge.gameObject);
+        endBridge.SetActive(true);
     }
 }
