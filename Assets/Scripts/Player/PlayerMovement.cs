@@ -16,7 +16,10 @@ public class PlayerMovement : Singleton<PlayerMovement>
     public delegate void DescendingDelgate(bool bDescending);
     public DescendingDelgate Descending;
 
+
+    private Animator animator;
     private Rigidbody2D rb;
+    private SpriteRenderer spriteRenderer;
     private PlayerControls controls;
     private CapsuleCollider2D col;
     private LayerTraveler layerTraveler;
@@ -31,6 +34,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
     bool bGrounded = false;
     bool bAscending = false;
     float prevYVel = 0.0f;
+    float inputHorizontal;
     private bool bMovingToLocation = false;
     private MoveTo moveToLocation;
 
@@ -38,6 +42,8 @@ public class PlayerMovement : Singleton<PlayerMovement>
     protected override void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         col = GetComponent<CapsuleCollider2D>();
         layerTraveler = GetComponent<LayerTraveler>();
         moveToLocation = GetComponent<MoveTo>();
@@ -52,6 +58,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
         controls.PlayerActions.ClickAction.Enable();
     }
 
+
     void Move(CallbackContext ctx)
     {
         moveDir = ctx.ReadValue<float>();
@@ -62,6 +69,8 @@ public class PlayerMovement : Singleton<PlayerMovement>
         if (rb.linearVelocityX != moveDir * speed)
             rb.linearVelocityX = moveDir * speed;
     }
+
+    
 
     void StopMove(CallbackContext ctx)
     {
@@ -82,6 +91,19 @@ public class PlayerMovement : Singleton<PlayerMovement>
             prevYVel = rb.linearVelocityY;
         }
     }
+
+    void Update()
+    {
+        if ((rb.linearVelocityX > 0) || (rb.linearVelocityX < 0))
+        {
+            animator.SetBool("isMoving", true);
+        }
+        else {
+            animator.SetBool("isMoving", false);
+        }
+
+    }
+
 
     void ClickAction(CallbackContext ctx)
     {
@@ -114,6 +136,8 @@ public class PlayerMovement : Singleton<PlayerMovement>
 
     private void FixedUpdate()
     {
+        inputHorizontal = Input.GetAxisRaw("Horizontal");
+        
         if (!bMovingToLocation)
         {
             bool bFrameGrounded = isGrounded() && Mathf.Abs(rb.linearVelocityY) <= .5f;
@@ -137,7 +161,17 @@ public class PlayerMovement : Singleton<PlayerMovement>
             }
             bGrounded = bFrameGrounded;
         }
+        if (inputHorizontal < 0) 
+        {
+            spriteRenderer.flipX = false;
+        }
+        if (inputHorizontal > 0) 
+        {
+            spriteRenderer.flipX = true;
+        }
+        
     }
+
 
     private void OnDestroy()
     {
