@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      game-jam-player_0003_f_four 2_0: -2912691069474894880
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
