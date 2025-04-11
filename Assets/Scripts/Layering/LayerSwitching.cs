@@ -10,6 +10,9 @@ public class LayerSwitching : MonoBehaviour
     [SerializeField]
     private int layer = 0;
 
+    [SerializeField]
+    private float playerZ = 0;
+
     private float maxY = 0f;
 
     private void Awake()
@@ -23,11 +26,11 @@ public class LayerSwitching : MonoBehaviour
         {
             if (collision.bounds.min.y >= maxY)
             {
-                layerTraveler.SwitchLayer(layer);
+                layerTraveler.SwitchLayer(layer, playerZ);
             }
             else
             {
-                layerTraveler.SwitchLayer(layer - 1);
+                layerTraveler.SwitchLayer(layer - 1, playerZ - 1);
             }
         }
     }

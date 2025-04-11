@@ -8,7 +8,9 @@ public class FishingRod : MonoBehaviour, InteractableInterface
     [SerializeField]
     private Vector3 bridgeStopLocation = Vector3.zero;
     [SerializeField]
-    private Vector3 bridgeStopSize = Vector3.zero;
+    private GameObject fullBridge;
+    [SerializeField]
+    private GameObject partBridge;
     [SerializeField]
     private float bridgeAcceptanceRadius = 0.5f;
 
@@ -21,7 +23,6 @@ public class FishingRod : MonoBehaviour, InteractableInterface
 
     public void FinishMove()
     {
-        Debug.Log("Reached fishing rod");
         Interact(null);
     }
 
@@ -42,13 +43,14 @@ public class FishingRod : MonoBehaviour, InteractableInterface
 
     public void Interact(Item heldItem)
     {
-        Debug.Log("Move bridge piece");
         bridgePieceMove.MoveToLocation(bridgeStopLocation, true, true, bridgeAcceptanceRadius, BridgePieceDone);
     }
 
     public void BridgePieceDone()
     {
-
+        Destroy(bridgePieceMove.gameObject);
+        Destroy(partBridge);
+        fullBridge.SetActive(true);
     }
 
     public void TrashcanBurst()

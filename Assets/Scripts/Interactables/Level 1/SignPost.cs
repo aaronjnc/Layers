@@ -10,6 +10,10 @@ public class SignPost : MonoBehaviour, InteractableInterface
     private Sprite fixedSign;
     [SerializeField]
     private EItems requiredItem;
+    [SerializeField]
+    private GameObject signPlatform;
+    [SerializeField]
+    private GameObject backSignPlatform;
     private SpriteRenderer spriteRenderer;
     private MoveToInteractable moveToInteractable;
 
@@ -26,10 +30,13 @@ public class SignPost : MonoBehaviour, InteractableInterface
 
     public void Interact(Item heldItem)
     {
-        if (heldItem.GetItem() == requiredItem)
+        if (heldItem != null && heldItem.GetItem() == requiredItem)
         {
             spriteRenderer.sprite = fixedSign;
+            signPlatform.SetActive(true);
+            backSignPlatform.SetActive(false);
             GetComponent<ObjectInteractionManager>().RemoveTop();
+            PlayerInventory.Instance.Take();
             Destroy(this);
         }
     }

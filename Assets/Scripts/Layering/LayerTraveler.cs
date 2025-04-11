@@ -32,17 +32,19 @@ public class LayerTraveler : MonoBehaviour
         col = GetComponent<Collider2D>();
     }
 
-    public void SwitchLayer(int layer)
+    public void SwitchLayer(int layer, float newZ)
     {
         if (layer >= layerScales.Count)
         {
             Debug.LogError("Invalid layer " + layer);
             return;
         }
-        if (currentLayer == layer && gameObject.transform.lossyScale == layerScales[currentLayer])
+        if (currentLayer == layer)
         {
             return;
         }
+        Vector3 layerDiff = new Vector3(0, 0, newZ - transform.position.z);
+        gameObject.transform.position += layerDiff;
         currentLayer = layer;
         bScaling = true;
         if (layerSprites.Count > layer)

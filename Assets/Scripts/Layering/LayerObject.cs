@@ -42,6 +42,7 @@ public class LayerObject : MonoBehaviour
 
     public virtual void Lock()
     {
+        transform.position = new Vector3(goalLocation.x, goalLocation.y, transform.position.z);
         bLocked = true;
         Destroy(this);
         foreach (Component c in destroyComponents)

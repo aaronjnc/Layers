@@ -25,6 +25,12 @@ public class PlayerInventory : Singleton<PlayerInventory>
 
     }
 
+    public void Take()
+    {
+        Destroy(currentlyHeld.gameObject);
+        currentlyHeld = null;
+    }
+
     public void Drop()
     {
         currentlyHeld.gameObject.transform.SetParent(null);

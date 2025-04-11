@@ -120,12 +120,10 @@ public class PlayerMovement : Singleton<PlayerMovement>
                 MoveToInteractable moveToInteractable = interactable.GetMoveToInteractable();
                 if (moveToInteractable)
                 {
-                    Debug.Log("Move to");
                     MoveToLocation(moveToInteractable);
                 }
                 else
                 {
-                    Debug.Log("Interact");
                     interactable.Interact(inventory.GetHeldItem());
                 }
             }

@@ -15,11 +15,14 @@ public class Trashcan : MonoBehaviour
     [SerializeField]
     private Sprite brokenTrashcan;
 
+    private MoveToInteractable moveToInteractable;
+
     private SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        moveToInteractable = GetComponent<MoveToInteractable>();
     }
 
     public void Smash()
@@ -33,11 +36,12 @@ public class Trashcan : MonoBehaviour
     {
         Destroy(startOrb.gameObject);
         endOrb.SetActive(true);
+        moveToInteractable.SetPrereq(true);
     }
 
     public void BridgeStop()
     {
-        Destroy(endBridge.gameObject);
+        Destroy(startBridge.gameObject);
         endBridge.SetActive(true);
     }
 }

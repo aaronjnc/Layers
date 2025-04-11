@@ -11,8 +11,6 @@ using static UnityEngine.InputSystem.InputAction;
 public class MovableObject : LayerObject, InteractableInterface
 {
 
-    [SerializeField]
-    private bool bPrereqMet = true;
     bool bMovable = false;
 
     private BoxCollider2D triggerCollider;
@@ -20,14 +18,6 @@ public class MovableObject : LayerObject, InteractableInterface
     private MoveToInteractable moveToInteractable;
     
     private PlayerControls controls;
-
-    [SerializeField]
-    private int interactLayer = 0;
-
-    [SerializeField]
-    private float acceptanceRadius = 5.0f;
-    [SerializeField]
-    private float relMoveLoc = 0f;
 
     private float moveDir = 0f;
     private float speed = 0f;
@@ -68,7 +58,7 @@ public class MovableObject : LayerObject, InteractableInterface
     {
         if (!bLocked && bMovable)
         {
-            if (Vector3.Distance(goalLocation, transform.position) <= goalAcceptanceRadius)
+            if (Vector2.Distance(goalLocation, transform.position) <= goalAcceptanceRadius)
             {
                 SwitchMovable();
                 Lock();
@@ -125,7 +115,7 @@ public class MovableObject : LayerObject, InteractableInterface
     protected void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, goalAcceptanceRadius);
+        Gizmos.DrawWireSphere(goalLocation, goalAcceptanceRadius);
     }
 
     public void FinishMove()
