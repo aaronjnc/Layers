@@ -47,7 +47,7 @@ public class LayerTraveler : MonoBehaviour
         gameObject.transform.position += layerDiff;
         currentLayer = layer;
         bScaling = true;
-        if (layerSprites.Count > layer)
+        if (layerSprites.Count > layer && layer >= 0)
         {
             spriteRenderer.sprite = layerSprites[layer];
         }

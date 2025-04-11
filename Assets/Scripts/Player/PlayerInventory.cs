@@ -13,7 +13,6 @@ public class PlayerInventory : Singleton<PlayerInventory>
             Drop();
         }
         currentlyHeld = item.GetComponent<Item>();
-        currentlyHeld.Pickup();
         foreach (Collider2D col in item.GetComponents<Collider2D>())
         {
             if (!col.isTrigger)
@@ -21,8 +20,16 @@ public class PlayerInventory : Singleton<PlayerInventory>
                 col.enabled = false;
             }
         }
-        item.transform.SetParent(gameObject.transform, false);
+        item.transform.SetParent(gameObject.transform, true);
+        currentlyHeld.Pickup();
+    }
 
+    public void SwitchLayer(int layer)
+    {
+        if (currentlyHeld)
+        {
+            currentlyHeld.SetLayer(layer);
+        }
     }
 
     public void Take()

@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 6551272743041485650}
   - component: {fileID: 4259819038159062902}
   - component: {fileID: 887878391772667698}
-  - component: {fileID: 2685747280241365570}
   - component: {fileID: 7785232213625160335}
   - component: {fileID: 4883135569212193749}
+  - component: {fileID: 6237553735024042610}
+  - component: {fileID: 4803618955921122436}
   m_Layer: 8
   m_Name: Hammer
   m_TagString: Untagged
@@ -127,26 +128,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 3.335
---- !u!114 &2685747280241365570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4346144360308223547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98c8ddc776a6b3e4eb03e58a4924fe8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layerScales:
-  - {x: 0.076, y: 0.076, z: 1}
-  - {x: 0.05, y: 0.05, z: 1}
-  - {x: 0.03, y: 0.03, z: 1}
-  layerSprites: []
-  currentLayer: 2
-  shrinkSpeed: 0.5
-  acceptanceScale: 1
 --- !u!50 &7785232213625160335
 Rigidbody2D:
   serializedVersion: 5
@@ -188,3 +169,72 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heldPosition: {x: -1.34, y: -0.49, z: -1}
   heldRotation: {x: 0, y: 0, z: 0}
+  item: 0
+  layerSizes:
+  - {x: 0.076, y: 0.076, z: 1}
+  - {x: 0.05, y: 0.05, z: 1}
+  - {x: 0.03, y: 0.03, z: 1}
+--- !u!61 &6237553735024042610
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4346144360308223547}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.42, y: 6.67}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.0001, y: 0.0001}
+  m_EdgeRadius: 0
+--- !u!114 &4803618955921122436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4346144360308223547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a88f85100f9c1042b5e2f24931c7cd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bAutomateApproach: 0
+  acceptanceRadius: 0
+  relMoveLoc: {x: 0, y: 0, z: 0}
+  bFlipApproach: 0
+  interactLayer: 0
+  bPrereqMet: 0

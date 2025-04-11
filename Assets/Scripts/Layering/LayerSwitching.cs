@@ -17,7 +17,14 @@ public class LayerSwitching : MonoBehaviour
 
     private void Awake()
     {
-        maxY = GetComponent<BoxCollider2D>().bounds.max.y;
+        foreach (BoxCollider2D box in GetComponents<BoxCollider2D>())
+        {
+            if (box.isTrigger)
+            {
+                maxY = box.bounds.max.y;
+                break;
+            }
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -27,10 +34,12 @@ public class LayerSwitching : MonoBehaviour
             if (collision.bounds.min.y >= maxY)
             {
                 layerTraveler.SwitchLayer(layer, playerZ);
+                PlayerInventory.Instance.SwitchLayer(layer);
             }
             else
             {
                 layerTraveler.SwitchLayer(layer - 1, playerZ - 1);
+                PlayerInventory.Instance.SwitchLayer(layer - 1);
             }
         }
     }

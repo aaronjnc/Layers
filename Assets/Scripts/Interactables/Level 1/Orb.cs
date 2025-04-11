@@ -2,6 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(MoveToInteractable))]
 [RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(ObjectFinish))]
 public class Orb : MonoBehaviour, InteractableInterface
 {
     private MoveToInteractable moveToInteractable;
@@ -47,6 +48,7 @@ public class Orb : MonoBehaviour, InteractableInterface
             Destroy(itemObj.GetComponent<LayerTraveler>());
             itemObj.transform.position = lightPos;
             chest.SetActive(true);
+            GetComponent<ObjectFinish>().Finish();
             Destroy(gameObject);
         }
     }

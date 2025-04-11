@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(MoveToInteractable))]
-
+[RequireComponent(typeof(ObjectFinish))]
 public class Ladder : MovableObject
 {
     [SerializeField]
@@ -13,6 +13,7 @@ public class Ladder : MovableObject
     {
         finalLadder.SetActive(true);
         dropLayer.SetActive(true);
+        GetComponent<ObjectFinish>().Finish();
         Destroy(gameObject);
     }
 }

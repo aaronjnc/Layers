@@ -8,6 +8,7 @@ using static UnityEngine.InputSystem.InputAction;
 [RequireComponent(typeof(MoveToInteractable))]
 [RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D))] //trigger collider
 [RequireComponent(typeof(ObjectInteractionManager))]
+[RequireComponent(typeof(ObjectFinish))]
 public class MovableObject : LayerObject, InteractableInterface
 {
 
@@ -141,5 +142,11 @@ public class MovableObject : LayerObject, InteractableInterface
     public void AssignMoveToCallback()
     {
         moveToInteractable.AssignCallback(FinishMove);
+    }
+
+    public override void Lock()
+    {
+        base.Lock();
+        GetComponent<ObjectFinish>().Finish();
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(MoveToInteractable))]
 [RequireComponent(typeof(ObjectInteractionManager))]
+[RequireComponent(typeof(ObjectFinish))]
 public class Grave : MonoBehaviour, InteractableInterface
 {
     private SpriteRenderer spriteRenderer;
@@ -10,6 +11,8 @@ public class Grave : MonoBehaviour, InteractableInterface
 
     [SerializeField]
     private Sprite fullGraveSprite;
+    [SerializeField]
+    private GameObject flowers;
 
     [SerializeField]
     private EItems requiredItem;
@@ -46,6 +49,8 @@ public class Grave : MonoBehaviour, InteractableInterface
         {
             spriteRenderer.sprite = fullGraveSprite;
             PlayerInventory.Instance.Take();
+            flowers.SetActive(true);
+            GetComponent<ObjectFinish>().Finish();
             Destroy(this);
         }
     }

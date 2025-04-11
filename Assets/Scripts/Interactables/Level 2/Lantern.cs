@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(MoveToInteractable))]
 [RequireComponent(typeof(ObjectInteractionManager))]
+[RequireComponent(typeof(ObjectFinish))]
 public class Lantern : MonoBehaviour, InteractableInterface
 {
     private MoveToInteractable moveToInteractable;
@@ -45,6 +46,7 @@ public class Lantern : MonoBehaviour, InteractableInterface
         {
             spriteRenderer.sprite = litLantern;
             PlayerInventory.Instance.Take();
+            GetComponent<ObjectFinish>().Finish();
             Destroy(this);
         }
     }

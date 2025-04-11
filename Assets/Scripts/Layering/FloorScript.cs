@@ -16,7 +16,7 @@ public class FloorScript : MonoBehaviour
     private void Start()
     {
         PlayerMovement.Instance.Descending += PlayerDescending;
-        if (PlayerMovement.Instance.GetPlayerLow() <= transform.position.y)
+        if (PlayerMovement.Instance.GetPlayerLow() <= col.bounds.min.y)
         {
             col.enabled = false;
         }
@@ -26,14 +26,14 @@ public class FloorScript : MonoBehaviour
     {
         if (bDescending)
         {
-            if (PlayerMovement.Instance.GetPlayerLow() >= transform.position.y)
+            if (PlayerMovement.Instance.GetPlayerLow() >= col.bounds.min.y)
             {
                 col.enabled = true;
             }
         }
         else
         {
-            if (PlayerMovement.Instance.GetPlayerLow() <= transform.position.y)
+            if (PlayerMovement.Instance.GetPlayerLow() <= col.bounds.min.y)
             {
                 col.enabled = false;
             }

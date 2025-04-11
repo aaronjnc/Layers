@@ -1,12 +1,15 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum EItems
 {
     Hammer,
     Orb,
+    Flowers,
+    Doorknob,
 }
 
-[RequireComponent(typeof(LayerTraveler))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(MoveToInteractable))]
@@ -18,6 +21,8 @@ public class Item : MonoBehaviour, InteractableInterface
     private Vector3 heldRotation = Vector3.zero;
     [SerializeField]
     private EItems item;
+    [SerializeField]
+    private List<Vector3> layerSizes = new List<Vector3>();
 
     private MoveToInteractable moveToInteractable;
     private Rigidbody2D rb;
@@ -31,6 +36,13 @@ public class Item : MonoBehaviour, InteractableInterface
     public EItems GetItem()
     {
         return item;
+    }
+
+    public void SetLayer(int layer)
+    {
+        transform.localScale = layerSizes[layer];
+        transform.localPosition = heldPosition;
+        transform.localEulerAngles = heldRotation;
     }
 
     public void Pickup()

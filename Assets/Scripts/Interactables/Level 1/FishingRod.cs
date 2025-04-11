@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(MoveToInteractable))]
+[RequireComponent(typeof(ObjectFinish))]
 public class FishingRod : MonoBehaviour, InteractableInterface
 {
     [SerializeField]
@@ -51,6 +52,7 @@ public class FishingRod : MonoBehaviour, InteractableInterface
         Destroy(bridgePieceMove.gameObject);
         Destroy(partBridge);
         fullBridge.SetActive(true);
+        GetComponent<ObjectFinish>().Finish();
     }
 
     public void TrashcanBurst()

@@ -108,6 +108,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
     void ClickAction(CallbackContext ctx)
     {
         RaycastHit2D hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()));
+
         if (!hit.collider) return;
 
         Debug.Log("Clicked " + hit.collider.gameObject.name);
@@ -117,6 +118,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
             InteractableInterface interactable;
             if ((interactable = interactionManager.GetInteractable()) != null)
             {
+                Debug.Log("Move to object");
                 MoveToInteractable moveToInteractable = interactable.GetMoveToInteractable();
                 if (moveToInteractable)
                 {
@@ -198,6 +200,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
 
     public void MoveToLocation(MoveToInteractable moveToInteractable)
     {
+        Debug.Log("Automated? " + moveToInteractable.isApproachAutomated() + " Can Move? " + moveToInteractable.CanMoveTo() + " Layer? " + GetPlayerLayer());
         if (moveToInteractable.isApproachAutomated() && moveToInteractable.CanMoveTo())
         {
             MoveToLocation(moveToInteractable.GetMoveLoc(), false, moveToInteractable.GetAcceptanceRadius(), moveToInteractable.callback);

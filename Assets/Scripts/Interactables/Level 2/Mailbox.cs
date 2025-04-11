@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(MoveToInteractable))]
 [RequireComponent(typeof(ObjectInteractionManager))]
+[RequireComponent(typeof(ObjectFinish))]
 public class Mailbox : MonoBehaviour, InteractableInterface
 {
     private SpriteRenderer spriteRenderer;
@@ -45,6 +46,7 @@ public class Mailbox : MonoBehaviour, InteractableInterface
         spriteRenderer.sprite = cleanedMailbox;
         GameObject flowerObj = Instantiate(flowers);
         PlayerInventory.Instance.GiveItem(flowerObj);
+        GetComponent<ObjectFinish>().Finish();
         Destroy(this);
     }
 }

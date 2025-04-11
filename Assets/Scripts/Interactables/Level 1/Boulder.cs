@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(MoveToInteractable))]
 [RequireComponent(typeof(MoveTo))]
 [RequireComponent(typeof(ObjectInteractionManager))]
+[RequireComponent(typeof(ObjectFinish))]
 public class Boulder : MonoBehaviour, InteractableInterface
 {
     private MoveTo moveToLocation;
@@ -56,6 +57,7 @@ public class Boulder : MonoBehaviour, InteractableInterface
         layerTraveler.SetActive(true);
         trashCan.Smash();
         fishingRod.TrashcanBurst();
+        GetComponent<ObjectFinish>().Finish();
         Destroy(gameObject);
     }
 
